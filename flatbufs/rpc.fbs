@@ -1,0 +1,76 @@
+// Wire protocol for ZMQ RPC (REP port 31337) and stream (PUB port 31338).
+// Replaces VizWatchService.proto from the SMURFS Java implementation.
+namespace smurfs;
+
+enum FuncCall : byte {
+    Connect = 0,
+    GetCharName,
+    GetMotorJoints,
+    LoadChar,
+    LookAt,
+    PointAt,
+    StartAnim,
+    StopAnim,
+    Disconnect,
+    StreamSpec,
+}
+
+/// A 3D point or vector.
+struct Vec3 {
+    x:float64;
+    y:float64;
+    z:float64;
+}
+
+/// Connection request parameters.
+table ConnectParams {
+    /// Destination hostname.
+    dest:string;
+    /// Port to connect on.
+    port:int32;
+    /// Joint indices to watch; empty means watch all.
+    watching:[int32];
+}
+
+/// A named joint with its index.
+table JointId {
+    name:string;
+    id:int32;
+}
+
+/// A collection of named joint indices.
+table JointIds {
+    ids:[JointId];
+}
+
+/// A single joint position at the current time.
+table Joint {
+    idx:int32;
+    rpos:float64;
+}
+
+/// All joint positions for one frame.
+table RawJoints {
+    joints:[Joint];
+}
+
+/// An RPC call descriptor (sent by clients on the REP socket).
+table Rpc {
+    call_id:FuncCall;
+    /// Unique request identifier for correlation.
+    guid:int32;
+    connect:ConnectParams;
+    a_string:string;
+    vec3:Vec3;
+}
+
+/// Top-level message envelope for both REP requests and PUB stream frames.
+table MsgRpc {
+    call:Rpc;
+    joint_ids:JointIds;
+    vec3:Vec3;
+    a_string:string;
+    joints:RawJoints;
+}
+
+root_type MsgRpc;
