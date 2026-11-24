@@ -1,0 +1,16 @@
+[package]
+name = "bot"
+version = "0.1.0"
+edition = "2021"
+description = "SMURFS robotics animation/kinematics server"
+license = "MIT"
+
+[dependencies]
+gltf        = "1.4.1"
+zmq         = "0.10.0"
+flatbuffers = "24.3.25"
+nalgebra    = "0.33"
+ctrlc       = "3.4"
+
+[build-dependencies]
+# flatc is invoked via std::process::Command in build.rs

@@ -1,0 +1,39 @@
+// IDL file for GUID internal structure.
+namespace fn_dag;
+
+struct quaternion {
+  w:float64;
+  x:float64;
+  y:float64;
+  z:float64;
+}
+
+struct position {
+  x:float64;
+  y:float64;
+  z:float64;
+}
+
+struct transform {
+  pos: position;
+  rot: quaternion;
+}
+
+// node_data uses a table (not struct) because it contains a string field.
+table node_data {
+  name: string;
+  init_t: transform;
+  mesh_index: uint16;
+}
+
+table node {
+  data: node_data;
+  children: [uint16];
+}
+
+table transform_tree {
+  root_index: uint16;
+  nodes: [node];
+}
+
+root_type transform_tree;

@@ -3,4 +3,10 @@
 .cache/
 build/
 html/
+src/gen/
 *.pyc
+
+
+# Added by cargo
+
+/target
